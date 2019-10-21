@@ -6,9 +6,39 @@ import logo from './images/logo.png'
 
 const {Item} =Form
 class Login extends Component {
-  handleSubmit=()=>{
-
+  handleSubmit=(event)=>{
+    event.preventDefault() // 阻止表单提交
+     // 对所有表单项进行统一的表单验证
+     this.props.form.validateFields((err, values) => {
+      if (!err) { // 验证成功
+        console.log('发ajax请求', values)
+      } 
+    });
   }
+   /* 
+  对密码进行自定义验证
+  */
+ validatePwd = (rule, value, callback) => {
+  /*
+  用户名/密码的的合法性要求
+    1). 必须输入
+    2). 必须大于等于4位
+    3). 必须小于等于12位
+    4). 必须是英文、数字或下划线组成
+  */
+ // value = value.trim()
+ if (value==='') {
+   callback('密码必须输入')
+ } else if (value.length<4) {
+   callback('密码必须大于等于4位')
+ } else if (value.length>12) {
+   callback('密码必须小于等于12位')
+ } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
+   callback('密码必须是英文、数字或下划线组成')
+ } else {
+   callback() // 验证通过/成功
+ }
+}
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -22,7 +52,21 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
                 {getFieldDecorator('username', {
-                rules: [{ required: true, message: 'Please input your username!' }],
+                 initialValue: '', // 初始值
+                 /*
+                 用户名/密码的的合法性要求
+                   1). 必须输入
+                   2). 必须大于等于4位
+                   3). 必须小于等于12位
+                   4). 必须是英文、数字或下划线组成
+                 */
+                 // 声明式验证: 利用已有的验证规则进行验证, 不用亲自判断
+                 rules: [
+                   { required: true, whitespace: true, message: '用户名必须输入' },
+                   { min: 4, message: '用户名不能小于4位' },
+                   { max: 12, message: '用户名不能大于12位' },
+                   { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文、数字或下划线组成' },
+                 ],
               })(
                 <Input
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -32,7 +76,11 @@ class Login extends Component {
             </Item>
             <Item>
                 {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your Password!' }],
+                initialValue: '', // 初始值
+                rules: [
+                  // 自定义验证
+                  {validator: this.validatePwd}
+                ]
               })(
                 <Input
                   prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}

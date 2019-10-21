@@ -1,13 +1,11 @@
-import {INCREMENT,DECREMENT} from '../action-types/count-types'
+import { INCREATMENT,DECREATMENT } from "../anction-types/count";
 
-
-export const increment = (number)=>({type:INCREMENT,data:number})
-export const decrement = (number)=>({type:DECREMENT,data:number})
-export const incrementAsync=(number,delayTime)=>{
-  return dispatch =>{
-   setTimeout(() => {
-     dispatch(increment(number))
-   }, delayTime);
+export const increment = (number)=>({type:INCREATMENT,data:number})
+export const decrement =(number)=>({type:DECREATMENT,data:number})
+export const incrementAsync = (number,time)=>{
+  return dispath =>{
+    setTimeout(() => {
+       dispath(increment(number))
+    }, time);
   }
 }
-

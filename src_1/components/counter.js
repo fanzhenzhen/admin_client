@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 export default class Counter extends Component {
@@ -9,28 +9,29 @@ export default class Counter extends Component {
     incrementAsync:PropTypes.func.isRequired
   }
   numberRef = React.createRef()
-  increment =() =>{
-    const number =this.numberRef.current.value *1
-    this.props.increment(number) 
 
+  increment=()=>{
+   const number = this.numberRef.current.value*1
+   this.props.increment(number)
   }
-  decrement =() =>{
-    const number =this.numberRef.current.value *1
-    this.props.decrement(number) 
+  decrement =()=>{
+    const number = this.numberRef.current.value*1
+    this.props.decrement(number)
   }
-  incrementIfOdd = () =>{
-    const number =this.numberRef.current.value *1
+  incrementIfOdd=()=>{
+    const number = this.numberRef.current.value * 1
     const count = this.props.count
-    if (count %2===1) {
-      this.props.increment(number) 
+    if (count %2=== 1) {
+      this.props.increment(number)
     }
   }
-  incrementAsync =()=>{
-    const number =this.numberRef.current.value *1
-    this.props.incrementAsync(number,1000)
+  incrementAsync=()=>{
+   const number =this.numberRef.current.value *1
+   this.props.incrementAsync(number,1000)
   }
+
   render() {
-    const {count} = this.props
+   const count = this.props.count
     return (
       <div>
       <p>click {count} times</p>

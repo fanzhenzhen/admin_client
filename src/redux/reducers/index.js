@@ -1,9 +1,9 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from "redux";
 
-import count from './count'
-import products from './products'
+import count from "./count";
+import prudoucts from './prudoucts'
 
 export default combineReducers({
   count,
-  products
+  prudoucts
 })

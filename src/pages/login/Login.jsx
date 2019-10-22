@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button } from 'antd';
+import axios from 'axios'
+import qs from 'querystring'
 
 import './login.less'
 import logo from './images/logo.png'
@@ -12,6 +14,12 @@ class Login extends Component {
      this.props.form.validateFields((err, values) => {
       if (!err) { // 验证成功
         console.log('发ajax请求', values)
+        axios.post('/login',qs.stringify(values))
+        .then(
+         response=>{
+           console.log('response', response.data)
+         }
+        )
       } 
     });
   }
@@ -52,7 +60,6 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
                 {getFieldDecorator('username', {
-<<<<<<< HEAD
                  initialValue: '', // 初始值
                  /*
                  用户名/密码的的合法性要求
@@ -68,9 +75,6 @@ class Login extends Component {
                    { max: 12, message: '用户名不能大于12位' },
                    { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文、数字或下划线组成' },
                  ],
-=======
-                rules: [{ required: true, message: 'Please input your username!' }],
->>>>>>> 6073b1a51bcaa100db02537493fe499120b252e7
               })(
                 <Input
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -80,15 +84,11 @@ class Login extends Component {
             </Item>
             <Item>
                 {getFieldDecorator('password', {
-<<<<<<< HEAD
                 initialValue: '', // 初始值
                 rules: [
                   // 自定义验证
                   {validator: this.validatePwd}
                 ]
-=======
-                rules: [{ required: true, message: 'Please input your Password!' }],
->>>>>>> 6073b1a51bcaa100db02537493fe499120b252e7
               })(
                 <Input
                   prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}

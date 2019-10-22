@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button } from 'antd';
-import axios from 'axios'
-import qs from 'querystring'
+import {connect} from 'react-redux'
+import { Redirect } from 'react-router-dom';
 
 import './login.less'
 import logo from './images/logo.png'
-import ajax from '../../api/ajax';
+import {loginAscyn} from '../../redux/action-creators/user'
 
 const {Item} =Form
 class Login extends Component {
@@ -14,18 +14,22 @@ class Login extends Component {
      // 对所有表单项进行统一的表单验证
      this.props.form.validateFields((err, values) => {
       if (!err) { // 验证成功
-        console.log('发ajax请求', values)
-        ajax.post('/login',values)
-        .then(
-        result=>{
-           const {status,data:{user,token}={},msg} = result
-           if (status===0) {
-            console.log('登陆成功', user, token )
-          } else {
-            console.log('登陆失败', msg)
-          }
-         }
-        )
+        // console.log('发ajax请求', values)
+        // ajax.post('/login',values)
+        // .then(
+        // result=>{
+        //    const {status,data:{user,token}={},msg} = result
+        //    if (status===0) {
+        //     console.log('登陆成功', user, token )
+        //   } else {
+        //     console.log('登陆失败', msg)
+        //   }
+        //  }
+        // )
+        const {username,password} = values
+        console.log('values', values)
+       // console.log('this.props', this.props)
+        this.props.loginAscyn(username,password)
       } 
     });
   }
@@ -54,6 +58,10 @@ class Login extends Component {
  }
 }
   render() {
+    const {isLogin} =this.props
+    if (isLogin) {
+       return <Redirect to='/' />
+    }
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
@@ -113,4 +121,8 @@ class Login extends Component {
   }
 }
 const LoginWrap = Form.create()(Login)
-export default LoginWrap
+
+export default connect(
+      state=>({isLogin: state.user.isLogin}),
+      {loginAscyn}
+    )(LoginWrap)

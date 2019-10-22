@@ -1,0 +1,2 @@
+export const SAVE_USER_TOKEN = 'SAVE_USER_TOKEN'
+export const REMOVE_USER_TOKEN = 'REMOVE_USER_TOKEN'

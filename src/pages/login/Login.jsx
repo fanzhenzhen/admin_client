@@ -5,6 +5,7 @@ import qs from 'querystring'
 
 import './login.less'
 import logo from './images/logo.png'
+import ajax from '../../api/ajax';
 
 const {Item} =Form
 class Login extends Component {
@@ -14,10 +15,15 @@ class Login extends Component {
      this.props.form.validateFields((err, values) => {
       if (!err) { // 验证成功
         console.log('发ajax请求', values)
-        axios.post('/login',qs.stringify(values))
+        ajax.post('/login',values)
         .then(
-         response=>{
-           console.log('response', response.data)
+        result=>{
+           const {status,data:{user,token}={},msg} = result
+           if (status===0) {
+            console.log('登陆成功', user, token )
+          } else {
+            console.log('登陆失败', msg)
+          }
          }
         )
       } 

@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import './index.less'
 import logo from './images/logo.png'
 import {loginAscyn} from '../../redux/action-creators/user'
+import withCheckLogin from '../with-check-login'
 
 const {Item} =Form
 @connect(
@@ -13,6 +14,7 @@ const {Item} =Form
   {loginAscyn}
 )
 @Form.create()
+@withCheckLogin
 class Login extends Component {
   handleSubmit=(event)=>{
     event.preventDefault() // 阻止表单提交
@@ -63,10 +65,10 @@ class Login extends Component {
  }
 }
   render() {
-    const {isLogin} =this.props
-    if (isLogin) {
-       return <Redirect to='/' />
-    }
+    // const {isLogin} =this.props
+    // if (isLogin) {
+    //    return <Redirect to='/' />
+    // }
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">

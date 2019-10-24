@@ -6,7 +6,7 @@ const initState = {
   user:_user,
   token:_token,
   isLogin:_token && _user._id
-
+   
 }
 export default function user(state=initState,action) {
   switch (action.type) {

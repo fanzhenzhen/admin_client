@@ -9,3 +9,6 @@ export const reqLogin = ({username,password})=>ajax({
     method:'POST',
     data:{username,password}
   })
+
+//获取用户列表
+export const getUsers = ()=>ajax.get('/manage/user/list')

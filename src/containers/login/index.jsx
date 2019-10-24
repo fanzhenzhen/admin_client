@@ -3,11 +3,16 @@ import { Form, Icon, Input, Button } from 'antd';
 import {connect} from 'react-redux'
 import { Redirect } from 'react-router-dom';
 
-import './login.less'
+import './index.less'
 import logo from './images/logo.png'
 import {loginAscyn} from '../../redux/action-creators/user'
 
 const {Item} =Form
+@connect(
+  state=>({isLogin: state.user.isLogin}),
+  {loginAscyn}
+)
+@Form.create()
 class Login extends Component {
   handleSubmit=(event)=>{
     event.preventDefault() // 阻止表单提交
@@ -120,9 +125,6 @@ class Login extends Component {
     )
   }
 }
-const LoginWrap = Form.create()(Login)
 
-export default connect(
-      state=>({isLogin: state.user.isLogin}),
-      {loginAscyn}
-    )(LoginWrap)
+
+export default Login

@@ -2,8 +2,8 @@ import React,{Component} from 'react';
 import {Route,Switch } from "react-router-dom";
 import {Router} from "react-router-dom";
 
-import Login from './pages/login/Login'
-import Admin from './pages/admin/Admin'
+import Login from './containers/login'
+import Admin from './containers/admin'
 import history from './history';
 
 export default class App extends Component{

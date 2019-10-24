@@ -5,13 +5,17 @@ import { Redirect } from 'react-router-dom';
 import { removeUserToken } from '../../redux/action-creators/user';
 import {getUsers} from '../../api'
 
+@connect(
+  state=>({user:state.user.user,isLogin:state.user.isLogin}),
+  {removeUserToken}
+  )
  class Admin extends Component {
    logout=()=>{
      this.props.removeUserToken()
    }
-   getUsers=()=>{
-    getUsers()
-   }
+    getUsers=()=>{
+      getUsers()
+    }
   render() { 
     if (!this.props.isLogin) {
         return <Redirect to='/login'/>
@@ -26,7 +30,4 @@ import {getUsers} from '../../api'
     )
   }
 }
-export default connect(
-  state=>({user:state.user.user,isLogin:state.user.isLogin}),
-  {removeUserToken}
-)(Admin)
+export default Admin

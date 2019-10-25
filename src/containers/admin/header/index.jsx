@@ -11,7 +11,7 @@ import { removeUserToken } from "../../../redux/action-creators/user";
 import {reqWeather} from '../../../api/index'
 
 @connect(
-  state=>({username:state.user.user.username}),
+  state=>({username:state.user.user.username,headerTitle:state.headerTitle}),
   {removeUserToken,reqWeather}
 )
 @withRouter
@@ -65,7 +65,6 @@ import {reqWeather} from '../../../api/index'
     clearInterval(this.intervalId)
   }
   render() {
-    const path = this.props.location.pathname
     const {currentTime,isFullScreen,dayPictureUrl,weather} = this.state
     return (
       <div className="header">
@@ -77,7 +76,7 @@ import {reqWeather} from '../../../api/index'
         <LinkButton type='link' onClick={this.logout}>退出</LinkButton>
       </div>
       <div className="header-bottom">
-        <div className="header-bottom-left">{path}</div>
+        <div className="header-bottom-left">{this.props.headerTitle}</div>
         <div className="header-bottom-right">
           <span>{currentTime}</span>
           <img src={dayPictureUrl} alt="weather"/>

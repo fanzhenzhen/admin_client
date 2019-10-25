@@ -1,15 +1,25 @@
 import React, { Component } from 'react'
-import {  Menu, Icon, Button } from 'antd';
+import {  Menu, Icon } from 'antd';
+import {withRouter,Link} from 'react-router-dom'
+import { connect } from 'react-redux';
 
 import './index.less'
 import logo from '../../../assets/images/logo.png'
 import menuList from '../../../config/menuConfig';
+import {setHeaderTitle} from '../../../redux/action-creators/header-title'
 
 const { SubMenu,Item } = Menu;
-export default class LeftNav extends Component {
+@connect(
+  state=>({headerTitle: state.headerTitle}),
+  {setHeaderTitle}
+)
+@withRouter
+class LeftNav extends Component {
    
   getMenuList_reduce =(menuList)=>{
+
     return menuList.reduce((pre,item)=>{
+      const path = this.props.location.pathname
       /*
       {
           title: '首页', // 菜单标题名称
@@ -19,13 +29,22 @@ export default class LeftNav extends Component {
         } 
       */
       if (!item.children) {
+        if (item.key === path && this.props.headerTitle!==item.title) {
+           this.props.setHeaderTitle(item.title)
+        }
         pre.push(
           <Item key={item.key}>
-            <Icon type={item.icon} />
-            <span>{item.title}</span>
+            <Link to={item.key}>
+              <Icon type={item.icon} />
+              <span>{item.title}</span>
+            </Link>
           </Item>
         )  
       }else{
+        if (item.children.some(item =>item.key===path)) {
+          this.openkey  = item.key
+          
+        }
         pre.push(
           <SubMenu
           key={item.key}
@@ -44,6 +63,9 @@ export default class LeftNav extends Component {
     },[])
   }
   render() { 
+    const selectedKey = this.props.location.pathname
+    const openKey = this.openKey
+    console.log("selectedKey",selectedKey)
     return (
       <div className="left-nav">
         <div className="left-nav-header">
@@ -52,7 +74,10 @@ export default class LeftNav extends Component {
         </div>
         <Menu
           mode="inline"
-          theme="dark">
+          theme="dark"
+          selectedKeys={[selectedKey]}
+          defaultOpenKeys={[openKey]}
+          >
           {this.getMenuList_reduce(menuList)}
 
         </Menu>
@@ -60,3 +85,4 @@ export default class LeftNav extends Component {
     )
   }
 }
+export default LeftNav

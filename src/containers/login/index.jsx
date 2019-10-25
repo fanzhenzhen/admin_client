@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import { Redirect } from 'react-router-dom';
 
 import './index.less'
-import logo from './images/logo.png'
+import logo from '../../assets/images/logo.png'
 import {loginAscyn} from '../../redux/action-creators/user'
 import withCheckLogin from '../with-check-login'
 
@@ -119,7 +119,7 @@ class Login extends Component {
               )}
             </Item>
             <Item>
-            <Button type="primary" htmlType="submit" className="login-form-button">登陆</Button>
+            <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
             </Item>
           </Form>
         </div>

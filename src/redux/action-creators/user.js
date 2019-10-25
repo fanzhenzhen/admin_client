@@ -5,8 +5,10 @@ import {SAVE_USER_TOKEN,REMOVE_USER_TOKEN} from '../action-types'
 import storage from '../../utils/storage'
 
 
-
+//保存用户信息
 const saveUserToken = (user,token)=>({type:SAVE_USER_TOKEN,data:{user,token}})
+
+//移除用户信息
 export const removeUserToken = ()=>{
   //清除local中的数据
   // localStorage.removeItem('user_key')

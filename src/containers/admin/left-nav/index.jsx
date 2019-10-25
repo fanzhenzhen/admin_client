@@ -34,16 +34,16 @@ class LeftNav extends Component {
         }
         pre.push(
           <Item key={item.key}>
-            <Link to={item.key}>
+            <Link to={item.key} onClick={()=>this.props.setHeaderTitle(item.title)}>
               <Icon type={item.icon} />
               <span>{item.title}</span>
             </Link>
           </Item>
         )  
       }else{
-        if (item.children.some(item =>item.key===path)) {
-          this.openkey  = item.key
-          
+
+        if (item.children.some(item =>item.key === path)) {
+          this.openKey  = item.key  
         }
         pre.push(
           <SubMenu
@@ -63,9 +63,10 @@ class LeftNav extends Component {
     },[])
   }
   render() { 
+    const menuNodes = this.getMenuList_reduce(menuList)
     const selectedKey = this.props.location.pathname
     const openKey = this.openKey
-    console.log("selectedKey",selectedKey)
+    console.log("selectedKey",selectedKey,openKey)
     return (
       <div className="left-nav">
         <div className="left-nav-header">
@@ -78,7 +79,7 @@ class LeftNav extends Component {
           selectedKeys={[selectedKey]}
           defaultOpenKeys={[openKey]}
           >
-          {this.getMenuList_reduce(menuList)}
+          {menuNodes}
 
         </Menu>
       </div>

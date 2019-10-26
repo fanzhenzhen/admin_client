@@ -22,6 +22,7 @@ export default class Category extends Component {
   state = {
     categorys: [],
     loading: false, // 是否显示loading
+    isShow:false
   }
 
   getCategorys=async()=>{
@@ -32,7 +33,7 @@ export default class Category extends Component {
     this.setState({
       loading:false
     })
-    if(result.status==0){
+    if(result.status === 0){
       const categorys = result.data
       this.setState({
         categorys
@@ -65,6 +66,15 @@ export default class Category extends Component {
               bordered
               pagination={{pageSize: 5, showQuickJumper: true}}
             />
+            <Modal
+                title="Basic Modal"
+                visible={this.state.isShow}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}
+              >
+               <input placeholder="请输入分类名称nbbbb"/>
+             </Modal>
+            
          </Card>
       </div>
     )

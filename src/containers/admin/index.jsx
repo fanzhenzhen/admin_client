@@ -4,7 +4,6 @@ import {Route, Redirect ,Switch} from 'react-router-dom';
 import {Layout} from 'antd'
 
 import { removeUserToken } from '../../redux/action-creators/user';
-import {getUsers} from '../../api'
 import withCheckLogin from '../with-check-login';
 import Home from '../../components/home'
 import Category from '../category'
@@ -17,7 +16,7 @@ import Pie from '../../components/charts/pie'
 import LeftNav from './left-nav'
 import AdminHeader from './header'
 
-const { Header, Footer, Sider, Content } = Layout
+const { Footer, Sider, Content } = Layout
 
 @connect(
   state=>({user:state.user.user,isLogin:state.user.isLogin}),

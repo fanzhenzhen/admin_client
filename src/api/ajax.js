@@ -22,7 +22,7 @@ instance.interceptors.request.use(config=>{
     //如果有token , 添加到请求头中: Authorization
     const token =store.getState().user.token
     if (token) {
-      config.headers. Authorization ='atguigu_'+token 
+      config.headers['Authorization'] ='atguigu_'+token 
     }
 
   return config

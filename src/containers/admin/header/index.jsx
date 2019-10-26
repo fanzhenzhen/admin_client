@@ -12,7 +12,7 @@ import {reqWeather} from '../../../api/index'
 
 @connect(
   state=>({username:state.user.user.username,headerTitle:state.headerTitle}),
-  {removeUserToken,reqWeather}
+  {removeUserToken}
 )
 @withRouter
  class Home extends Component {

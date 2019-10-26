@@ -1,7 +1,9 @@
 import {SAVE_USER_TOKEN,REMOVE_USER_TOKEN} from '../action-types';
 
-const _user = JSON.parse(localStorage.getItem('user_key')||'{}')
-const _token = localStorage.getItem('user_token')
+import store from '../../utils/storage';
+
+const _user = store.get('user_key',{})
+const _token = store.get('token_key','')
 const initState = {
   user:_user,
   token:_token,

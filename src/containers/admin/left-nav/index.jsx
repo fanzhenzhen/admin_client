@@ -29,7 +29,7 @@ class LeftNav extends Component {
         } 
       */
       if (!item.children) {
-        if (item.key === path && this.props.headerTitle!==item.title) {
+        if (path.indexOf(item.key)===0 && this.props.headerTitle!==item.title) {
            this.props.setHeaderTitle(item.title)
         }
         pre.push(
@@ -42,7 +42,7 @@ class LeftNav extends Component {
         )  
       }else{
 
-        if (item.children.some(item =>item.key === path)) {
+        if (item.children.some(item =>path.indexOf(item.key)===0)) {
           this.openKey  = item.key  
         }
         pre.push(
@@ -64,7 +64,10 @@ class LeftNav extends Component {
   }
   render() { 
     const menuNodes = this.getMenuList_reduce(menuList)
-    const selectedKey = this.props.location.pathname
+    let selectedKey = this.props.location.pathname
+    if (selectedKey.indexOf('/product/')=== 0 ) {
+       selectedKey ='/product'
+    }
     const openKey = this.openKey
     console.log("selectedKey",selectedKey,openKey)
     return (

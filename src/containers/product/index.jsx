@@ -7,7 +7,7 @@ export default class Product extends Component {
   render() {
     return (
       <div>
-        Product
+        商品列表
       </div>
     )
   }

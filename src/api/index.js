@@ -50,3 +50,8 @@ export const reqUpdateCategory = ({categoryId, categoryName}) => ajax({
   method: 'POST',
   data: {categoryId, categoryName}
 })
+
+export const reqProductList = (pageNum,pageSize)=>ajax({
+  url:'/manage/product/list',
+  params:{pageNum,pageSize}
+})

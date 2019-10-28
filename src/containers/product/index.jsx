@@ -1,14 +1,139 @@
 import React, { Component } from 'react'
+import {Card, Select, Input, Button, Icon, Table, message} from 'antd'
 
+import memoryUtils from '../../utils/memory'
+import {reqProductList} from '../../api'
+import { PAGE_SIZE } from "../../config";
 /* 
 Admin的商品子路由组件
 */
+const {Option} = Select
 export default class Product extends Component {
+  state = {
+    products: [], // 当前页商品的数组
+    total: 0, // 商品的总数量
+    searchType: 'productName', // productDesc  搜索的类型
+    searchName: '', // 搜索的关键字
+  }
+  columns = [
+    {
+      title: '商品名称',
+      dataIndex: 'name',
+    },
+    {
+      title: '商品描述',
+      dataIndex: 'desc',
+    },
+    {
+      title: '价格',
+      dataIndex: 'price',
+      render: (price) => '¥' + price
+    },
+    {
+      width: 100,
+      title: '状态',
+      // dataIndex: 'status',
+      render: ({_id, status}) => { // status: 1在售, 2已下架
+        let btnText = '下架'
+        let text = '在售'
+        if (status===2) {
+          btnText = '上架'
+          text = '已下架'
+        }
+        return (
+          <span>
+            <Button 
+              type="primary" 
+             // onClick={() => this.updateStatus(_id, status===1 ? 2 : 1)}
+            >{btnText}</Button>
+            <span>{text}</span>
+          </span>
+        )
+      }
+    },
+    {
+      width: 100,
+      title: '操作',
+      render: (product) => (
+        <span>
+          <Button type="link" onClick={() => {
+           // memoryUtils.product = product // 将product保存在内存容器中
+            //this.props.history.push(`/product/detail/${product._id}`)
+          }}>详情</Button>
+          <Button type="link" onClick={() => {
+           // memoryUtils.product = product
+           // this.props.history.push(`/product/addupdate`)
+          }}>修改</Button>
+        </span>
+      )
+    },
+  ]
+  getProducts =async (pageNum)=>{
+   const result = await reqProductList(pageNum,PAGE_SIZE)
+   console.log('result', result)
+   if(result.status===0){
+     const {list ,total} = result.data
+     this.setState({
+       products:list,
+       total
+     })
+   }
+  }
+  componentDidMount(){
+    this.getProducts(1)
+  }
   render() {
+    const {products, searchType, searchName} = this.state
+    const title = (
+      <span>
+        <Select 
+          value={searchType} 
+          onChange={(value) => this.setState({searchType: value})}
+        >
+          <Option value="productName">按名称搜索</Option>
+          <Option value="productDesc">按描述搜索</Option>
+        </Select>
+        <Input 
+          style={{width: 200, margin: '0 10px'}} 
+          placeholder="关键字" 
+          value={searchName}
+          onChange={event => this.setState({searchName: event.target.value})}
+        />
+        <Button 
+          type="primary" 
+          onClick={() => {
+            this.isSearch = true // 保存一个标识搜索的值
+            this.getProducts(1)
+          }}
+        >
+          搜索
+        </Button>
+      </span>
+    )
+
+    const extra = (
+      <Button type="primary" onClick={() => {
+       // memoryUtils.product = {}
+        this.props.history.push('/product/addupdate')
+      }}>
+        <Icon type="plus"></Icon>
+        添加商品
+      </Button>
+    )
     return (
-      <div>
-        商品列表
-      </div>
+      <Card title={title} extra={extra}>
+          <Table
+          dataSource={products}
+          columns={this.columns}
+          bordered
+          rowKey="_id"
+          pagination={{
+            pageSize:5, 
+        
+          }}
+        />
+
+      </Card>
     )
   }
 }

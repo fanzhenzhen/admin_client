@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Card, Select, Input, Button, Icon, Table, message} from 'antd'
 
 import memoryUtils from '../../utils/memory'
-import {reqProductList} from '../../api'
+import {reqProductList,reqSearchProducts} from '../../api'
 import { PAGE_SIZE } from "../../config";
 /* 
 Admin的商品子路由组件
@@ -57,19 +57,31 @@ export default class Product extends Component {
       render: (product) => (
         <span>
           <Button type="link" onClick={() => {
-           // memoryUtils.product = product // 将product保存在内存容器中
-            //this.props.history.push(`/product/detail/${product._id}`)
+            memoryUtils.product = product // 将product保存在内存容器中
+            this.props.history.push(`/product/detail/${product._id}`)
           }}>详情</Button>
           <Button type="link" onClick={() => {
-           // memoryUtils.product = product
-           // this.props.history.push(`/product/addupdate`)
+            memoryUtils.product = product
+            this.props.history.push(`/product/addupdate`)
           }}>修改</Button>
         </span>
       )
     },
   ]
   getProducts =async (pageNum)=>{
-   const result = await reqProductList(pageNum,PAGE_SIZE)
+    let result
+    if(this.isSearch){
+      const {searchType, searchName} = this.state
+      if (!searchName) return
+     result = await reqSearchProducts({
+       pageNum,
+       pageSize:PAGE_SIZE,
+       searchType,
+       searchName
+     })
+    }else{
+     result = await reqProductList(pageNum,PAGE_SIZE)
+    }
    console.log('result', result)
    if(result.status===0){
      const {list ,total} = result.data
@@ -83,7 +95,7 @@ export default class Product extends Component {
     this.getProducts(1)
   }
   render() {
-    const {products, searchType, searchName} = this.state
+    const {products,total, searchType, searchName} = this.state
     const title = (
       <span>
         <Select 
@@ -113,7 +125,7 @@ export default class Product extends Component {
 
     const extra = (
       <Button type="primary" onClick={() => {
-       // memoryUtils.product = {}
+        memoryUtils.product = {}
         this.props.history.push('/product/addupdate')
       }}>
         <Icon type="plus"></Icon>
@@ -129,7 +141,7 @@ export default class Product extends Component {
           rowKey="_id"
           pagination={{
             pageSize:5, 
-        
+            total, 
           }}
         />
 

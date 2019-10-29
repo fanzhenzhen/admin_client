@@ -111,3 +111,13 @@ export const reqUpdateStaus = (productId,status)=>ajax({
     status
   }
 })
+
+/* 获取角色列表 */
+export const reqRoles = () => ajax('/manage/role/list')
+
+
+/* 添加角色 */
+export const reqAddRole = (roleName) => ajax.post('/manage/role/add',{roleName})
+
+/* 更新角色 */
+export const reqUpdateRole = (role) => ajax.post('/manage/role/update',{role})

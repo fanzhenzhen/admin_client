@@ -120,4 +120,4 @@ export const reqRoles = () => ajax('/manage/role/list')
 export const reqAddRole = (roleName) => ajax.post('/manage/role/add',{roleName})
 
 /* 更新角色 */
-export const reqUpdateRole = (role) => ajax.post('/manage/role/update',{role})
+export const reqUpdateRole = (role) => ajax.post('/manage/role/update',role)

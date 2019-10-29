@@ -18,7 +18,7 @@ export default function roles(state=initRoles,action) {
       return [...state,action.data]
 
     case UPDATE_ROLE:
-      return action.map(item=>{
+      return state.map(item=>{
         if (item._id === action.data._id) {
           return action.data          
         }else{

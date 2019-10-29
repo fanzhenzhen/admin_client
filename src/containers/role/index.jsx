@@ -9,6 +9,7 @@ import {
  updateRoleAsync
 } from '../../redux/action-creators/roles'
 import AddForm from './add-form'
+import Auth from './auth'
 
 /* 
 Admin的角色管理子路由组件
@@ -18,8 +19,10 @@ Admin的角色管理子路由组件
   {getRolesAysnc,addRoleAsync,updateRoleAsync}
 )
  class Role extends Component {
+  authRef = React.createRef()
    state={
-     isShowAdd:false
+     isShowAdd:false,
+     isShowAuth:false
    }
   columns=[
     {
@@ -27,7 +30,7 @@ Admin的角色管理子路由组件
       dataIndex: 'name',
     },
     {
-      title: '角色名称',
+      title: '创建时间',
       dataIndex: 'create_time',
       render: create_time => dayjs(create_time).format('YYYY-MM-DD HH:mm:ss')
     },
@@ -42,7 +45,7 @@ Admin的角色管理子路由组件
     },
     {
       title: '操作',
-      render: () => <Button type="link">设置权限</Button>
+      render: (role) => <Button type="link" onClick = {()=>this.showAuth(role)}>设置权限</Button>
     },
   ]
    addRole=()=>{
@@ -63,6 +66,36 @@ Admin的角色管理子路由组件
      })
 
    }
+    showAuth=(role)=>{
+      this.role = role
+      this.setState({
+        isShowAuth:true
+      })
+
+    }
+   updateRole=async()=>{
+    const role = this.role
+    role.menus = this.authRef.current.getMenus()
+    role.auth_name = this.props.username
+    role.auth_time = Date.now()
+    
+    const msg = await this.props.updateRoleAsync(role)
+    if (msg) {
+      message.error(msg)    
+    }else{
+      message.success('授权成功')
+      this.setState({
+        isShowAuth: false
+      })
+
+    }
+    
+   }
+   hideUpdate=()=>{
+     this.setState({
+       isShowAuth:false
+     })
+   }
    hideAdd=()=>{
      this.form.resetFields()
      this.setState({
@@ -75,15 +108,14 @@ Admin的角色管理子路由组件
   render() {
     const  title= <Button type="primary" onClick={()=>{this.setState({isShowAdd:true})}}>添加角色</Button>
     const {roles} = this.props
-    const {isShowAdd} =this.state
+    const {isShowAdd,isShowAuth} =this.state
     return (
       <Card title={title}>
          <Table
           bordered
           rowKey="_id"
           dataSource={roles}
-          columns={this.columns}
-          
+          columns={this.columns}         
         />
            <Modal
           title="添加角色"
@@ -92,6 +124,14 @@ Admin的角色管理子路由组件
           onCancel={this.hideAdd}
         >
           <AddForm setForm={(form) => this.form = form}/>
+        </Modal>
+        <Modal
+          title="设置角色权限"
+          visible={isShowAuth}
+          onOk={this.updateRole}
+          onCancel={this.hideUpdate}
+        >
+          <Auth role={this.role || {}} ref={this.authRef}/>
         </Modal>
       </Card>
     )

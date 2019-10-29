@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button } from 'antd';
 import {connect} from 'react-redux'
-import { Redirect } from 'react-router-dom';
 
 import './index.less'
 import logo from '../../assets/images/logo.png'

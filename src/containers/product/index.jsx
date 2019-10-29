@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {Card, Select, Input, Button, Icon, Table, message} from 'antd'
 
 import memoryUtils from '../../utils/memory'
-import {reqProductList,reqSearchProducts} from '../../api'
+import {reqProductList,reqSearchProducts,reqUpdateStaus} from '../../api'
 import { PAGE_SIZE } from "../../config";
 /* 
 Admin的商品子路由组件
@@ -32,7 +32,6 @@ export default class Product extends Component {
     {
       width: 100,
       title: '状态',
-      // dataIndex: 'status',
       render: ({_id, status}) => { // status: 1在售, 2已下架
         let btnText = '下架'
         let text = '在售'
@@ -44,7 +43,7 @@ export default class Product extends Component {
           <span>
             <Button 
               type="primary" 
-             // onClick={() => this.updateStatus(_id, status===1 ? 2 : 1)}
+              onClick={() => this.updateStatus(_id, status===1 ? 2 : 1)}
             >{btnText}</Button>
             <span>{text}</span>
           </span>
@@ -68,6 +67,29 @@ export default class Product extends Component {
       )
     },
   ]
+  /* 更新商品的状态 */
+  updateStatus = async(id,status)=>{
+    const result = await reqUpdateStaus(id,status);
+    if (result.status==0) {
+      message.success('更新状态成功')
+      let products = this.state.products
+      products = products.map(item=>{
+        if (item._id === id) {
+          return {...item,status}
+        }else{
+          return item
+        }
+      })
+      this.setState({
+        products
+      })
+      
+    }else{
+      message.error(result.msg)
+    }
+
+  }
+  /* 得到produs的列表 */
   getProducts =async (pageNum)=>{
     let result
     if(this.isSearch){
@@ -141,7 +163,9 @@ export default class Product extends Component {
           rowKey="_id"
           pagination={{
             pageSize:5, 
-            total, 
+            total,
+            /* 参数透传   相当于onChange(page)=>this.getProducts(page) */
+            onChange:  this.getProducts  
           }}
         />
 

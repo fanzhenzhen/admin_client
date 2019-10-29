@@ -23,7 +23,7 @@ import {reqWeather} from '../../../api/index'
      weather:''//天气默认文本
   }
   logout=()=>{
-    Modal. confirm({
+    Modal.confirm({
       title: '确定要退出吗?',
       onOk:()=> {
        this.props.removeUserToken()//直接写。this指向有问题

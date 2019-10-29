@@ -74,11 +74,11 @@ export const reqSearchProducts = ({
 
 //添加 更新商品
 export const reqAddUpdateProduct = (product)=>ajax.post(
-  ajax.post(
+  
     '/manage/product/' + (product._id ? 'update' : 'add'),
     product
   )
-)
+
 
 /* 
 根据商品ID获取商品
@@ -95,5 +95,19 @@ export const reqCategory = (id) => ajax({
   url: '/manage/category/info',
   params: {
     categoryId: id
+  }
+})
+
+
+/* 
+更新商品的状态
+*/
+
+export const reqUpdateStaus = (productId,status)=>ajax({
+  url:'/manage/product/updateStatus',
+  method:'POST',
+  data:{
+    productId,
+    status
   }
 })

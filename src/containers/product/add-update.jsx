@@ -9,14 +9,48 @@ import {
   message
 } from 'antd'
 import {connect} from 'react-redux'
+
 import LinkButton from '../../components/link-button'
 import memoryUtils from '../../utils/memory'
+import {reqAddUpdateProduct} from '../../api'
+import {getCategorysAsync} from '../../redux/action-creators/categorys'
 
 const {Item} = Form
 const {Option} = Select
-
+@connect(
+  state=>({categorys:state.categorys}),
+  {getCategorysAsync}
+)
 @Form.create()
  class AddUpdate extends Component {
+
+ //提交
+ submit=()=>{
+  this.props.form.validateFields(async(err,values)=>{
+    if (!err) {
+       // 如果是更新, 需要有id数据
+       const id = memoryUtils.product._id
+       if (id) {
+         values._id = id
+       }
+       // 发添加/更新的请求
+       const result = await reqAddUpdateProduct(values)
+       if (result.status===0) {
+         message.success('操作成功')
+         // 跳转到列表页面
+         this.props.history.replace('/product')
+       } else {
+         message.error(result.msg)
+       }
+      
+    }
+  })
+ }
+
+  componentDidMount(){
+    this.props.getCategorysAsync()
+  }
+
   render() {
     const product = memoryUtils.product
     const title = (
@@ -86,6 +120,9 @@ const {Option} = Select
             })(
               <Select>
                 <Option value="">未选择</Option>
+                {
+                  categorys.map(c => <Option value={c._id} key={c._id}>{c.name}</Option>)
+                }
               </Select>
             )
           }

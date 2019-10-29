@@ -15,7 +15,7 @@ export const getCategorysAsync=()=>{
     
     //发送ajax请求
     const result = await reqCategorys()
-    if (result.status==0) {
+    if (result.status===0) {
       const categorys = result.data
       dispatch(receiveCategorys(categorys))
       
@@ -29,7 +29,7 @@ export const getCategorysAsync=()=>{
 export const addCategoryAsync=(categoryName)=>{
   return  async(dispatch)=>{
     const result = await reqAddCategory(categoryName)
-    if (result.status==0) {
+    if (result.status===0) {
       const category = result.data
       dispatch(addCategory(category))
       
@@ -42,7 +42,7 @@ export const addCategoryAsync=(categoryName)=>{
 export const updateCategoryAsync=({categoryId, categoryName})=>{
   return async dispatch=>{
     const result = await reqUpdateCategory({categoryId,categoryName})
-    if (result.status==0) {
+    if (result.status===0) {
       const category = {_id: categoryId, name: categoryName}
       dispatch(updateCategory(category))      
     }

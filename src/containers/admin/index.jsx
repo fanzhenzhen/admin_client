@@ -5,18 +5,8 @@ import {Layout} from 'antd'
 
 import { removeUserToken } from '../../redux/action-creators/user';
 import withCheckLogin from '../with-check-login';
-import Home from '../../components/home'
-import Category from '../category'
-import Product from '../product'
-import Role from '../role'
-import User from '../user'
-import Line from '../../components/charts/line'
-import Bar from '../../components/charts/bar'
-import Pie from '../../components/charts/pie'
 import LeftNav from './left-nav'
 import AdminHeader from './header'
-import ProductDetail from'../product/detail'
-import AddUpdateProduct from '../product/add-update'
 
 const { Footer, Sider, Content } = Layout
 
@@ -40,7 +30,7 @@ const { Footer, Sider, Content } = Layout
         <Layout>
           <AdminHeader/>
           <Content style={{backgroundColor: 'white', margin: '30px 15px 0 15px'}}>
-            <Switch>
+            {/* <Switch>
               <Route path="/home" component={Home}/>
               <Route path="/category" component={Category}/>
               <Route path="/product" component={Product} exact/>
@@ -52,7 +42,8 @@ const { Footer, Sider, Content } = Layout
               <Route path="/charts/bar" component={Bar}/>
               <Route path="/charts/pie" component={Pie}/>
               <Redirect to="/home"/>
-            </Switch>
+            </Switch> */}
+            {this.props.children}
           </Content>
           <Footer style={{textAlign: 'center'}}>推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
         </Layout>

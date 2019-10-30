@@ -70,7 +70,7 @@ export default class Product extends Component {
   /* 更新商品的状态 */
   updateStatus = async(id,status)=>{
     const result = await reqUpdateStaus(id,status);
-    if (result.status==0) {
+    if (result.status===0) {
       message.success('更新状态成功')
       let products = this.state.products
       products = products.map(item=>{

@@ -20,7 +20,7 @@ export const getRolesAysnc = ()=>{
   return async(dispatch,getState)=>{
     if (getState().roles.length >0) return 
     const result = await reqRoles()
-    if (result.status==0) {
+    if (result.status===0) {
       dispatch(receiveRoles(result.data))
     }
     return result.msg
@@ -30,7 +30,7 @@ export const getRolesAysnc = ()=>{
 export const addRoleAsync = (roleName)=>{
   return async dispatch=>{
   const result  =await reqAddRole(roleName)
-  if (result.status==0) {
+  if (result.status===0) {
 
     dispatch(addRole(result.data))
   }
@@ -43,7 +43,7 @@ export const addRoleAsync = (roleName)=>{
 export const updateRoleAsync = (role)=>{
   return async dispatch=>{
     const result  = await reqUpdateRole(role)
-    if (result.status==0) {
+    if (result.status===0) {
       dispatch(updateRole(role))
     }
     return result.msg

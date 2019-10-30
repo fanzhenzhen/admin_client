@@ -121,3 +121,12 @@ export const reqAddRole = (roleName) => ajax.post('/manage/role/add',{roleName})
 
 /* 更新角色 */
 export const reqUpdateRole = (role) => ajax.post('/manage/role/update',role)
+
+// 获取所有用户的列表
+export const reqUsers = () => ajax('/manage/user/list')
+
+/* 添加/更新用户 */
+export const reqAddOrUpdateUser = (user)=>ajax.post('/manage/user/'+(user._id?'update':'add') ,user)
+
+/* 删除用户 */
+export const reqDeleteUser = (userId )=>ajax.post('manage/user/delete',{userId})

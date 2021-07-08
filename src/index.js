@@ -1,7 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter} from "react-router-dom";
+import {Provider} from "react-redux";
+import {Spin} from 'antd'
+
 import App from './App'
+import store from './redux/store'
 
 
-ReactDOM.render(<HashRouter><App /></HashRouter>, document.getElementById('root'));
+ReactDOM.render((
+  <React.Suspense fallback={<Spin size="large"/>}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </React.Suspense>
+    ), 
+  document.getElementById('root')
+  );

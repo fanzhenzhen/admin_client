@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 
-export default class Admin extends Component {
+/* 
+测试饼图使用的子路由组件
+*/
+export default class Pie extends Component {
   render() {
     return (
       <div>
-        Admin
+        Pie
       </div>
     )
   }

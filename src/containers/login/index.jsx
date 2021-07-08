@@ -1,17 +1,41 @@
 import React, { Component } from 'react'
 import { Form, Icon, Input, Button } from 'antd';
+import {connect} from 'react-redux'
 
-import './login.less'
-import logo from './images/logo.png'
+import './index.less'
+import logo from '../../assets/images/logo.png'
+import {loginAscyn} from '../../redux/action-creators/user'
+import withCheckLogin from '../with-check-login'
 
 const {Item} =Form
+@connect(
+  state=>({isLogin: state.user.isLogin}),
+  {loginAscyn}
+)
+@Form.create()
+@withCheckLogin
 class Login extends Component {
   handleSubmit=(event)=>{
     event.preventDefault() // 阻止表单提交
      // 对所有表单项进行统一的表单验证
      this.props.form.validateFields((err, values) => {
       if (!err) { // 验证成功
-        console.log('发ajax请求', values)
+        // console.log('发ajax请求', values)
+        // ajax.post('/login',values)
+        // .then(
+        // result=>{
+        //    const {status,data:{user,token}={},msg} = result
+        //    if (status===0) {
+        //     console.log('登陆成功', user, token )
+        //   } else {
+        //     console.log('登陆失败', msg)
+        //   }
+        //  }
+        // )
+        const {username,password} = values
+        console.log('values', values)
+       // console.log('this.props', this.props)
+        this.props.loginAscyn(username,password)
       } 
     });
   }
@@ -40,6 +64,10 @@ class Login extends Component {
  }
 }
   render() {
+    // const {isLogin} =this.props
+    // if (isLogin) {
+    //    return <Redirect to='/' />
+    // }
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="login">
@@ -52,7 +80,6 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Item>
                 {getFieldDecorator('username', {
-<<<<<<< HEAD
                  initialValue: '', // 初始值
                  /*
                  用户名/密码的的合法性要求
@@ -68,9 +95,6 @@ class Login extends Component {
                    { max: 12, message: '用户名不能大于12位' },
                    { pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文、数字或下划线组成' },
                  ],
-=======
-                rules: [{ required: true, message: 'Please input your username!' }],
->>>>>>> 6073b1a51bcaa100db02537493fe499120b252e7
               })(
                 <Input
                   prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -80,15 +104,11 @@ class Login extends Component {
             </Item>
             <Item>
                 {getFieldDecorator('password', {
-<<<<<<< HEAD
                 initialValue: '', // 初始值
                 rules: [
                   // 自定义验证
                   {validator: this.validatePwd}
                 ]
-=======
-                rules: [{ required: true, message: 'Please input your Password!' }],
->>>>>>> 6073b1a51bcaa100db02537493fe499120b252e7
               })(
                 <Input
                   prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -98,7 +118,7 @@ class Login extends Component {
               )}
             </Item>
             <Item>
-            <Button type="primary" htmlType="submit" className="login-form-button">登陆</Button>
+            <Button type="primary" htmlType="submit" className="login-form-button">登录</Button>
             </Item>
           </Form>
         </div>
@@ -106,5 +126,6 @@ class Login extends Component {
     )
   }
 }
-const LoginWrap = Form.create()(Login)
-export default LoginWrap
+
+
+export default Login
